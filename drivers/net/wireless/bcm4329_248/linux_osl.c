@@ -377,13 +377,13 @@ osl_pktfree_static(osl_t *osh, void *p, bool send)
 			bcm_static_skb->pkt_use[i] = 0;
 			up(&bcm_static_skb->osl_pkt_sem);
 
-                        return;
-                }
-                if (p == bcm_static_skb->skb_8k[i])
-                {
-                        down(&bcm_static_skb->osl_pkt_sem);
-                        bcm_static_skb->pkt_use[i+MAX_STATIC_PKT_NUM] = 0;
-                        up(&bcm_static_skb->osl_pkt_sem);
+			return;
+		}
+		if (p == bcm_static_skb->skb_8k[i])
+		{
+			down(&bcm_static_skb->osl_pkt_sem);
+			bcm_static_skb->pkt_use[i+MAX_STATIC_PKT_NUM] = 0;
+			up(&bcm_static_skb->osl_pkt_sem);
 			return;
 		}
 	}

@@ -240,9 +240,9 @@ static int __devinit htc_extdiag_probe(struct platform_device *pdev)
 static int __devexit htc_extdiag_remove(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
+#ifdef CONFIG_DEBUG_FS
 	struct dentry *dent;
 
-#ifdef CONFIG_DEBUG_FS
 	dent = platform_get_drvdata(pdev);
 	debugfs_remove(dent);
 	platform_set_drvdata(pdev, NULL);
