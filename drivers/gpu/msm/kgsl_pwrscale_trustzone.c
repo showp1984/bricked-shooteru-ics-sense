@@ -28,6 +28,16 @@ struct tz_priv {
 	unsigned int no_switch_cnt;
 };
 
+#if defined(__GNUC__) && \
+	defined(__GNUC_MINOR__) && \
+	defined(__GNUC_PATCHLEVEL__) && \
+	((__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)) \
+		>= 40502
+#define USE_ARCH_EXTENSION_SEC 1
+#else
+#define USE_ARCH_EXTENSION_SEC 0
+#endif
+
 #define SWITCH_OFF		200
 #define TZ_UPDATE_ID		0x01404000
 #define TZ_RESET_ID		0x01403000
@@ -46,6 +56,9 @@ static int __secure_tz_entry(u32 cmd, u32 val)
 		__asmeq("%1", "r0")
 		__asmeq("%2", "r1")
 		__asmeq("%3", "r2")
+#if USE_ARCH_EXTENSION_SEC
+		".arch_extension sec\n"
+#endif
 		"smc    #0      @ switch to secure world\n"
 		: "=r" (r0)
 		: "r" (r0), "r" (r1), "r" (r2)
