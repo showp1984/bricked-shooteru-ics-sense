@@ -28,6 +28,16 @@
 				(p) < ((void __iomem *)(st) + (sz)))
 #define XLATE(p, pst, vst) ((u32)((p) - (vst)) + (pst))
 
+#if defined(__GNUC__) && \
+	defined(__GNUC_MINOR__) && \
+	defined(__GNUC_PATCHLEVEL__) && \
+	((__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)) \
+		>= 40502
+#define USE_ARCH_EXTENSION_SEC 1
+#else
+#define USE_ARCH_EXTENSION_SEC 0
+#endif
+
 static u32 __secure_readl(u32 addr)
 {
 	u32 context_id;
@@ -39,6 +49,9 @@ static u32 __secure_readl(u32 addr)
 		__asmeq("%1", "r0")
 		__asmeq("%2", "r1")
 		__asmeq("%3", "r2")
+#if USE_ARCH_EXTENSION_SEC
+		".arch_extension sec\n"
+#endif
 		"smc    #0      @ switch to secure world\n"
 		: "=r" (r0)
 		: "r" (r0), "r" (r1), "r" (r2)
@@ -74,6 +87,9 @@ static void __secure_writel(u32 v, u32 addr)
 		__asmeq("%1", "r1")
 		__asmeq("%2", "r2")
 		__asmeq("%3", "r3")
+#if USE_ARCH_EXTENSION_SEC
+		".arch_extension sec\n"
+#endif
 		"smc    #0      @ switch to secure world\n"
 		: /* No return value */
 		: "r" (r0), "r" (r1), "r" (r2), "r" (r3)
