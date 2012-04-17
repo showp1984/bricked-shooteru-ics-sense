@@ -594,9 +594,9 @@ static int pm8058_led_probe(struct platform_device *pdev)
 	}
 
 #ifdef CONFIG_TOUCHSCREEN_ATMEL_SWEEP2WAKE
-	if (!strcmp(pdata->led_config[2].name, "button-backlight")) {
-		sweep2wake_setleddev(&ldata[2].ldev);
-		printk(KERN_INFO "[sweep2wake]: set led device %s, bank %d\n", pdata->led_config[2].name, ldata[2].bank);
+	if (!strcmp(pdata->led_config[0].name, "button-backlight")) {
+		sweep2wake_setleddev(&ldata[0].ldev);
+		printk(KERN_INFO "[sweep2wake]: set led device %s, bank %d\n", pdata->led_config[0].name, ldata[0].bank);
 	}
 #endif
 
