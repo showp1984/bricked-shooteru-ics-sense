@@ -118,7 +118,7 @@ static struct led_classdev * sweep2wake_leddev;
 static DEFINE_MUTEX(pwrlock);
 
 #ifdef CONFIG_CMDLINE_OPTIONS
-static int __init cy8c_read_s2w_cmdline(char *s2w)
+static int __init atmel_read_s2w_cmdline(char *s2w)
 {
 	if (strcmp(s2w, "1") == 0) {
 		printk(KERN_INFO "[cmdline_s2w]: Sweep2Wake enabled. | s2w='%s'", s2w);
@@ -132,7 +132,7 @@ static int __init cy8c_read_s2w_cmdline(char *s2w)
 	}
 	return 1;
 }
-__setup("s2w=", cy8c_read_s2w_cmdline);
+__setup("s2w=", atmel_read_s2w_cmdline);
 #endif
 
 extern void sweep2wake_setdev(struct input_dev * input_device) {
